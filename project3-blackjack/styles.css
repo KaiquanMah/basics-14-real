@@ -12,7 +12,7 @@ body {
   font-family: sans-serif;
   margin-left: 30px;
   margin-right: 30px;
-  background-color: #e0e0e0;
+  background-color: #f5caca;
 }
 
 nav {
@@ -21,6 +21,7 @@ nav {
   left: -30px;
   width: calc(100% + 60px);
   margin-bottom: 30px;
+  font-family: "Noto Sans Display", sans-serif;
 }
 
 nav ul {
@@ -54,6 +55,7 @@ nav ul li a {
 
 #header {
   text-align: center;
+  color: #333;
 }
 
 .container {
@@ -74,6 +76,7 @@ input {
 }
 
 button {
+  font-family: "Anton", sans-serif;
   font-size: 21px;
   line-height: 33px;
   margin: 0 0 23px 0;
@@ -81,10 +84,14 @@ button {
 }
 
 .output-div {
-  background-color: lightgrey;
+  background-color: #ffebeb;
   margin: 20px auto;
   padding: 20px;
   width: 100%;
+  display: flex;
+  align-items: center;
+  text-align: left;
+  flex-direction: column;
 }
 
 hr {
@@ -180,4 +187,8 @@ hr {
 
 .justify-content-center {
   justify-content: center;
+}
+
+img {
+  max-width: 50%;
 }
