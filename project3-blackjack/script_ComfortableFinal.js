@@ -291,10 +291,6 @@ var displayPlayerCards = function (strWhichPlayer, anyPlayerCards) {
 // keep track # cards drawn globally across rounds
 let numCardsDrawnFromDeck = 4;
 
-// hide hit, stand buttons before player starts the game
-document.querySelector("#hit-button").style.visibility = "hidden";
-document.querySelector("#stand-button").style.visibility = "hidden";
-
 // =====================================================
 // Main Gameplay Function
 // =====================================================
@@ -303,18 +299,6 @@ var main = function (input) {
   // from shuffling deck to drawing 2 cards
   // =================================
   if (currentGameMode === modeCreateShuffleDeck) {
-    // hit button
-    // not sure why 'hit' did not appear as a button
-    // and was at the bottom of the page
-    // var hitButton = document.createElement("hit-button"); // element = <button id="hit-button">Hit</button> // id : # , class : .
-    // document.body.appendChild(hitButton); no need because already created in HTML
-
-    // show hit, stand buttons after player starts the game and draws 2 cards
-    document.querySelector("#hit-button").style.visibility = "visible";
-    document.querySelector("#stand-button").style.visibility = "visible";
-    // hide the 'Play' button
-    document.querySelector("#play-button").style.visibility = "hidden";
-
     cardDeck = createAndShuffleDeck();
 
     // deal 2 cards per player
@@ -353,7 +337,7 @@ var main = function (input) {
     outputMsg += displayPlayerCards(strPlayer, playerCards);
     outputMsg += `Player points so far: ${playerTotalRank}.<br>`;
     outputMsg +=
-      "Would you like to 'hit' or 'stand'? Click the 'hit' or 'stand' button respectively to continue.";
+      "Would you like to 'hit' or 'stand'? Enter your choice as 'h' or 's' respectively and click submit.";
     return outputMsg;
   }
 
@@ -361,12 +345,6 @@ var main = function (input) {
   // player hit/stand
   // =================================
   else if (currentGameMode === modePlayerChoice) {
-    // TO HIDE HIT AND STAND BUTTONS
-    document.querySelector("#hit-button").style.visibility = "hidden"; // document.querySelector("#hit-button").style.visibility = "visible";
-    document.querySelector("#stand-button").style.visibility = "hidden";
-    // show play button
-    document.querySelector("#play-button").style.visibility = "visible";
-
     // after "input validation"
     if (input === choiceHit || input === choiceStand) {
       // Player "stand"
@@ -421,18 +399,18 @@ var main = function (input) {
       currentGameMode = modeEvaluateFinalResults;
       outputMsg +=
         imgPlayerLost +
-        "Player busted. Computer busted. It was a tie. Click 'Play' to continue.";
+        "Player busted. Computer busted. It was a tie. Click submit to continue.";
     } else if (computerBust === 1) {
       // && playerBust !== 1
       currentGameMode = modeEvaluateFinalResults;
       outputMsg +=
-        imgPlayerWon + "Player won! Computer busted. Click 'Play' to continue.";
+        imgPlayerWon + "Player won! Computer busted. Click submit to continue.";
     } else if (playerBust === 1) {
       // && computerBust !== 1
       currentGameMode = modeEvaluateFinalResults;
       outputMsg +=
         imgPlayerLost +
-        "Computer won! Player busted. Click 'Play' to continue.";
+        "Computer won! Player busted. Click submit to continue.";
     }
     // if player or computer didnt bust, see whether currentGameMode === modeEvaluateFinalResults
     else {
@@ -440,31 +418,27 @@ var main = function (input) {
         // player won
         if (playerWin === 1) {
           currentGameMode = modeEvaluateFinalResults;
-          outputMsg += imgPlayerWon + "Player won! Click 'Play' to continue.";
+          outputMsg += imgPlayerWon + "Player won! Click submit to continue.";
         }
         // player tied
         else if (playerWin === 0.5) {
           currentGameMode = modeEvaluateFinalResults;
           outputMsg +=
             imgPlayerTied +
-            "Player tied with Computer. Click 'Play' to continue.";
+            "Player tied with Computer. Click submit to continue.";
         }
         // player lost
         else {
           currentGameMode = modeEvaluateFinalResults;
           outputMsg +=
             imgPlayerLost +
-            "Player lost to Computer. Try harder next time. Click 'Play' to continue.";
+            "Player lost to Computer. Try harder next time. Click submit to continue.";
         }
       }
       // if the game continues
       else {
         outputMsg +=
-          "Would you like to 'hit' or 'stand'? Click the 'hit' or 'stand' button respectively to continue.";
-
-        // show hit, stand buttons for player to continue playing
-        document.querySelector("#hit-button").style.visibility = "visible";
-        document.querySelector("#stand-button").style.visibility = "visible";
+          "Would you like to 'hit' or 'stand'? Enter your choice as 'h' or 's' respectively and click submit.";
       }
     }
     return outputMsg;
@@ -479,7 +453,7 @@ var main = function (input) {
 
     let outputMsg =
       imgLetsPlay +
-      "Do you want to play the game of Blackjack again? Enter 'yes' and click 'Play' to start a new game.";
+      "Do you want to play the game of Blackjack again? Enter 'yes' and click submit to start a new game.";
     return outputMsg;
   }
 
@@ -489,17 +463,11 @@ var main = function (input) {
   // =================================
   else if (currentGameMode === modeWantToPlayGameAgain) {
     if (input === "yes") {
-      // reset global gameplay variables
       currentGameMode = modeCreateShuffleDeck;
       numCardsDrawnFromDeck = 4;
       computerCards = [];
       playerCards = [];
       playerWin = "";
-      blackjackWin = "";
-      computerBust = "";
-      playerBust = "";
-      computerTotalRank = 0;
-      playerTotalRank = 0;
 
       let outputMsg = imgLetsPlay + "Let's play!";
       return outputMsg;
@@ -527,45 +495,15 @@ var main = function (input) {
   // safety code block to catch errors and restart the game
   // =================================
   else {
-    // reset global gameplay variables
+    // reset global variables
     currentGameMode = modeCreateShuffleDeck;
     numCardsDrawnFromDeck = 4;
     computerCards = [];
     playerCards = [];
     playerWin = "";
-    blackjackWin = "";
-    computerBust = "";
-    playerBust = "";
-    computerTotalRank = 0;
-    playerTotalRank = 0;
 
     let outputMsg =
       "Error. You did not give me a proper input. I am restarting this game!";
     return outputMsg;
   }
 };
-
-// =====================================================
-// Define buttons
-// =====================================================
-var hitButton = document.querySelector("#hit-button");
-
-hitButton.addEventListener("click", function () {
-  console.log("Player chose 'hit'");
-  // Input 'h' or hit into main() => store output in a new variable
-  var result = main("h");
-  // Display result in output element
-  var output = document.querySelector("#output-div");
-  output.innerHTML = result;
-});
-
-var standButton = document.querySelector("#stand-button");
-
-standButton.addEventListener("click", function () {
-  console.log("Player chose 'stand'");
-  // Input 's' or stand into main() => store output in a new variable
-  var result = main("s");
-  // Display result in output element
-  var output = document.querySelector("#output-div");
-  output.innerHTML = result;
-});
